@@ -24,6 +24,16 @@ along with this library; if not, write to the Free Software Foundation, Inc.,
 
 ////////// H264or5VideoStreamParser definition //////////
 
+/*
+ *  Modified by: zzx
+ *
+ *  Date       : Dec 29, 2014
+ *
+ *  Description: Set the h264 frame rate by user.
+ *
+ */
+double glb_h264_framerate = 25.0;
+
 class H264or5VideoStreamParser: public MPEGVideoStreamParser {
 public:
   H264or5VideoStreamParser(int hNumber, H264or5VideoStreamFramer* usingSource,
@@ -84,7 +94,11 @@ H264or5VideoStreamFramer
     ? new H264or5VideoStreamParser(hNumber, this, inputSource, includeStartCodeInOutput)
     : NULL;
   fNextPresentationTime = fPresentationTimeBase;
+#if 0
   fFrameRate = 25.0; // We assume a frame rate of 25 fps, unless we learn otherwise (from parsing a VPS or SPS NAL unit)
+#else
+  fFrameRate = glb_h264_framerate; // We assume a frame rate of 25 fps, unless we learn otherwise (from parsing a VPS or SPS NAL unit)
+#endif
 }
 
 H264or5VideoStreamFramer::~H264or5VideoStreamFramer() {
