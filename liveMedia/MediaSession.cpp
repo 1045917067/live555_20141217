@@ -803,7 +803,20 @@ Boolean MediaSubsession::initiate(int useSpecialRTPoffset) {
 
     // Try to use a big receive buffer for RTP - at least 0.1 second of
     // specified bandwidth and at least 50 KB
+#if 0
     unsigned rtpBufSize = fBandwidth * 25 / 2; // 1 kbps * 0.1 s = 12.5 bytes
+#else
+	/*
+	 *  Modified by: zzx
+	 *
+	 *  Date       : Dec 29, 2014
+	 *
+	 *  Description: Use a big receive buffer(1M) for RTP.
+	 *
+	 */
+	unsigned rtpBufSize = 1 * 1024 * 1024;
+
+#endif
     if (rtpBufSize < 50 * 1024)
       rtpBufSize = 50 * 1024;
     increaseReceiveBufferTo(env(), fRTPSocket->socketNum(), rtpBufSize);
