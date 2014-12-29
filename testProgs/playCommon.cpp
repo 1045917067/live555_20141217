@@ -728,7 +728,21 @@ void continueAfterDESCRIBE(RTSPClient*, int resultCode, char* resultString) {
 	  // Because we're saving the incoming data, rather than playing
 	  // it in real time, allow an especially large time threshold
 	  // (1 second) for reordering misordered incoming packets:
-	  unsigned const thresh = 1000000; // 1 second
+#if 0
+		unsigned const thresh = 1000000; // 1 second
+#else
+      /*
+       *  Modified by: zzx
+       *
+       *  Date       : Dec 29, 2014
+       *
+       *  Description: Set time threshold(16ms) for reordering misordered
+       *               incoming packets. Note that one second is too large
+       *               for real time stream.
+       */
+	  unsigned const thresh = 16000;     // 16 ms
+
+#endif
 	  subsession->rtpSource()->setPacketReorderingThresholdTime(thresh);
 	  
 	  // Set the RTP source's OS socket buffer size as appropriate - either if we were explicitly asked (using -B),
@@ -856,10 +870,22 @@ void createOutputFiles(char const* periodicFilenameSuffix) {
 	// Output file name is
 	//     "<filename-prefix><medium_name>-<codec_name>-<counter><periodicFilenameSuffix>"
 	static unsigned streamCounter = 0;
+#if 0
 	snprintf(outFileName, sizeof outFileName, "%s%s-%s-%d%s",
 		 fileNamePrefix, subsession->mediumName(),
 		 subsession->codecName(), ++streamCounter, periodicFilenameSuffix);
-      } else {
+#else
+      /*
+       *  Modified by: zzx
+       *
+       *  Date       : Dec 29, 2014
+       *
+       *  Description: Set the output file name.
+       *
+       */
+	  snprintf(outFileName, sizeof outFileName, "%s", fileNamePrefix);
+#endif
+	  } else {
 	// When outputting a single medium only, we output to 'stdout
 	// (unless the '-P <interval-in-seconds>' option was given):
 	sprintf(outFileName, "stdout");
