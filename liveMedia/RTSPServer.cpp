@@ -266,8 +266,19 @@ int RTSPServer::setUpOurSocket(UsageEnvironment& env, Port& ourPort) {
   do {
     // The following statement is enabled by default.
     // Don't disable it (by defining ALLOW_RTSP_SERVER_PORT_REUSE) unless you know what you're doing.
+	
+	  /*
+	   *  Modified by: zzx
+	   *
+	   *  Date       : Dec 30, 2014
+	   *
+	   *  Description: Allow rtsp server port reuse.
+	   *
+	   */
+#define ALLOW_RTSP_SERVER_PORT_REUSE
+
 #ifndef ALLOW_RTSP_SERVER_PORT_REUSE
-    NoReuse dummy(env); // Don't use this socket if there's already a local server using it
+	  NoReuse dummy(env); // Don't use this socket if there's already a local server using it
 #endif
     
     ourSocket = setupStreamSocket(env, ourPort);
