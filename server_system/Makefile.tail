@@ -1,0 +1,26 @@
+##### End of variables to change
+
+MUX_LIB = libmux.$(LIB_SUFFIX)
+ALL = $(MUX_LIB)
+all:	$(ALL)
+
+OBJS = CBFramedSource.$(OBJ) H264VideoCBFramedSource.$(OBJ) CBServerMediaSubsession.$(OBJ) H264CBServerMediaSubsession.$(OBJ) \
+ ADTSAudioCBFramedSource.$(OBJ) ADTSCBServerMediaSubsession.$(OBJ) RTSPServerApi.$(OBJ) sps_pps.$(OBJ) MediaSystemTaskScheduler.$(OBJ)
+
+$(MUX_LIB): $(OBJS)
+	$(LIBRARY_LINK)$@ $(LIBRARY_LINK_OPTS) $(OBJS)
+
+.$(C).$(OBJ):
+	$(C_COMPILER) -c $(C_FLAGS) $<       
+
+.$(CPP).$(OBJ):
+	$(CPLUSPLUS_COMPILER) -c $(CPLUSPLUS_FLAGS) $<
+
+RTSPServerApi.$(CPP):	include/rtspserver_api.h 
+CBFramedSource.$(CPP):	include/CBFramedSource.hh
+#include/liveMedia.hh include/BasicUsageEnvironment.hh include/strDup.hh
+
+clean:
+	-rm -rf *.$(OBJ) $(ALL) core *.core *~ include/*~
+
+##### Any additional, platform-specific rules come here:

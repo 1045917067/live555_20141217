@@ -48,6 +48,9 @@ public:
 				       Boolean isSSM = False,
 				       char const* miscSDPLines = NULL);
 
+  virtual ~ServerMediaSession();
+  
+  
   static Boolean lookupByName(UsageEnvironment& env,
                               char const* mediumName,
                               ServerMediaSession*& resultSession);
@@ -83,7 +86,7 @@ protected:
 		     Boolean isSSM, char const* miscSDPLines);
   // called only by "createNew()"
 
-  virtual ~ServerMediaSession();
+  //virtual ~ServerMediaSession();
 
 private: // redefined virtual functions
   virtual Boolean isServerMediaSession() const;
